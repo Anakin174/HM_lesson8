@@ -14,16 +14,16 @@
         update_cache: yes
 
     - name: Ensure maven package is present
-       apt:
-         name: maven
-         state: present
-         update_cache: yes
+      apt:
+        name: maven
+        state: present
+        update_cache: yes
 
     - name: Get git repo
-        shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+      shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
 
      - name: Build maven clean package
-        command: mvn -f /boxfuse-sample-java-war-hello/pom.xml clean package
+      command: mvn -f /boxfuse-sample-java-war-hello/pom.xml clean package
 
 - name: Install tomcat
   hosts: tomcat
@@ -44,6 +44,11 @@
           dest: var/lib/tomcat8/webapps
           mode: pull
         delegate_to: tomcat
+
+    - name: Ensure nginx service is started
+        service:
+          name: tomcat8
+          state: started
 
     - name: Open port
        rules:
