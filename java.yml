@@ -32,7 +32,7 @@
         name: "{{ item }}"
         state: present
       with_items:
-        - java-1.8.0-openjdk
+        - default-jdk
         - tomcat8
     - name: Ensure tomcat service stop
       service:
