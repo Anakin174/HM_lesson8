@@ -15,7 +15,7 @@
     - name: Pull war file
       fetch:
         src: /work/target/hello-1.0.war
-        dest: /tmp
+        dest: /home
 
 - name: Install tomcat
   hosts: tomcat
@@ -38,7 +38,7 @@
    #   delegate_to: tomcat
     - name: Push war file
       copy:
-        src: /tmp/hello-1.0.war
+        src: /home/hello-1.0.war
         dest: /var/lib/tomcat8
     - name: Ensure tomcat8 service is started
       service:
