@@ -28,7 +28,7 @@
   become: yes
   tasks:
     - name: Install basic java software
-      yum:
+      apt:
         name: "{{ item }}"
         state: present
       with_items:
