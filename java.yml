@@ -12,6 +12,10 @@
       git: repo=https://github.com/boxfuse/boxfuse-sample-java-war-hello.git dest=/work/ accept_hostkey=yes
     - name: Build maven clean package
       command: mvn -f /work/pom.xml clean package
+    - name: Pull war file
+      fetch:
+        src: /work/target/
+        dest: /tmp
 
 - name: Install tomcat
   hosts: tomcat
@@ -28,10 +32,14 @@
       service:
         name: tomcat8
         state: stopped
-    - name: Transfer file from maven to tomcat
-      synchronize:
-        src=/work/target/hello-1.0.war dest=/var/lib/tomcat8/hello-1.0.war
-      delegate_to: tomcat
+   # - name: Transfer file from maven to tomcat
+   #   synchronize:
+   #     src=/work/target/hello-1.0.war dest=/var/lib/tomcat8/hello-1.0.war
+   #   delegate_to: tomcat
+    - name: Push war file
+      copy:
+        src: /tmp/
+        dest: /var/lib/tomcat8
     - name: Ensure tomcat8 service is started
       service:
         name: tomcat8
