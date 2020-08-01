@@ -14,7 +14,7 @@
       command: mvn -f /work/pom.xml clean package
     - name: Pull war file
       fetch:
-        src: /work/target/
+        src: /work/target/hello-1.0.war
         dest: /tmp
 
 - name: Install tomcat
@@ -38,7 +38,7 @@
    #   delegate_to: tomcat
     - name: Push war file
       copy:
-        src: /tmp/
+        src: /tmp/hello-1.0.war
         dest: /var/lib/tomcat8
     - name: Ensure tomcat8 service is started
       service:
