@@ -7,20 +7,21 @@
   hosts: maven
   become: yes
   tasks:
-    - name: Ensure git package is present
-      apt:
-        name: git
-        state: present
-        update_cache: yes
+ #   - name: Ensure git package is present
+  #    apt:
+  #      name: git
+  #      state: present
+   #     update_cache: yes
     - name: Ensure maven package is present
       apt:
         name: maven
         state: present
         update_cache: yes
     - name: Get git repo
-      shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+     # shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+      git: repo=https://github.com/boxfuse/boxfuse-sample-java-war-hello.git dest=/home/ubuntu accept_hostkey=yes
     - name: Build maven clean package
-      command: mvn -f /boxfuse-sample-java-war-hello/pom.xml clean package
+      command: mvn -f /home/ubuntu/boxfuse-sample-java-war-hello/pom.xml clean package
 
 - name: Install tomcat
   hosts: tomcat
@@ -33,6 +34,10 @@
       with_items:
         - java-1.8.0-openjdk
         - tomcat8
+    - name: Ensure tomcat service stop
+      service:
+        name: tomcat8
+        state: stopped
     - name: Transfer file from maven to tomcat
       synchronize:
         src: /boxfuse-sample-java-war-hello/target/hello-1.0.war
