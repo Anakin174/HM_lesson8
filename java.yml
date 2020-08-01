@@ -33,10 +33,6 @@
       service:
         name: tomcat8
         state: stopped
-   # - name: Transfer file from maven to tomcat
-   #   synchronize:
-   #     src=/work/target/hello-1.0.war dest=/var/lib/tomcat8/hello-1.0.war
-   #   delegate_to: tomcat
     - name: Push war file
       copy:
         src: /home/hello-1.0.war
