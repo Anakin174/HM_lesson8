@@ -40,7 +40,7 @@
     - name: Push war file
       copy:
         src: /home/hello-1.0.war
-        dest: /var/lib/tomcat8
+        dest: /var/lib/tomcat8.webapps
     - name: Ensure tomcat8 service is started
       service:
         name: tomcat8
