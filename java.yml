@@ -1,0 +1,49 @@
+#[maven]
+#35.202.159.177
+#[tomcat]
+#34.65.240.26
+---
+- name: Install git
+  hosts: maven
+  become: yes
+  tasks:
+    - name: Ensure git package is present
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+
+    - name: Ensure maven package is present
+       apt:
+         name: maven
+         state: present
+         update_cache: yes
+
+    - name: Get git repo
+        shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+
+    - name: Build package
+
+- name: Install tomcat
+  hosts: tomcat
+  become: yes
+
+  tasks:
+    - name: Install basic java software
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - java-1.8.0-openjdk
+        - tomcat8
+  rules:
+    - proto: tcp
+        from_port: 8080
+        to_port: 8080
+        cidr_ip: 0.0.0.0/0
+
+
+
+
+
+
