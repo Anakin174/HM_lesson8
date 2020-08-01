@@ -16,6 +16,7 @@
       fetch:
         src: /work/target/hello-1.0.war
         dest: /home
+        flat: yes
 
 - name: Install tomcat
   hosts: tomcat
