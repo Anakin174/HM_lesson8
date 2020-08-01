@@ -15,7 +15,7 @@
     - name: Pull war file
       fetch:
         src: /work/target/hello-1.0.war
-        dest: /home
+        dest: /home/
         flat: yes
 
 - name: Install tomcat
