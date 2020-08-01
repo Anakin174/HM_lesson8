@@ -3,7 +3,7 @@
 #[tomcat]
 #34.65.240.26
 ---
-- name: Install git
+- name: Install build software
   hosts: maven
   become: yes
   tasks:
@@ -22,7 +22,8 @@
     - name: Get git repo
         shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
 
-    - name: Build package
+     - name: Build maven clean package
+        command: mvn -f /boxfuse-sample-java-war-hello/pom.xml clean package
 
 - name: Install tomcat
   hosts: tomcat
@@ -36,14 +37,17 @@
       with_items:
         - java-1.8.0-openjdk
         - tomcat8
-  rules:
-    - proto: tcp
-        from_port: 8080
-        to_port: 8080
-        cidr_ip: 0.0.0.0/0
 
+    - name: Transfer file from maven to tomcat
+        synchronize:
+          src: /boxfuse-sample-java-war-hello/target/hello-1.0.war
+          dest: var/lib/tomcat8/webapps
+          mode: pull
+        delegate_to: tomcat
 
-
-
-
-
+    - name: Open port
+       rules:
+         proto: tcp
+           from_port: 8080
+           to_port: 8080
+           cidr_ip: 0.0.0.0/0
