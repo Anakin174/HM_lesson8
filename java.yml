@@ -19,9 +19,9 @@
         update_cache: yes
     - name: Get git repo
      # shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
-      git: repo=https://github.com/boxfuse/boxfuse-sample-java-war-hello.git dest=/home/ accept_hostkey=yes
+      git: repo=https://github.com/boxfuse/boxfuse-sample-java-war-hello.git dest=/work/ accept_hostkey=yes
     - name: Build maven clean package
-      command: mvn -f /home/boxfuse-sample-java-war-hello/pom.xml clean package
+      command: mvn -f /work/boxfuse-sample-java-war-hello/pom.xml clean package
 
 - name: Install tomcat
   hosts: tomcat
@@ -40,7 +40,7 @@
         state: stopped
     - name: Transfer file from maven to tomcat
       synchronize:
-        src: home/boxfuse-sample-java-war-hello/target/hello-1.0.war
+        src: work/boxfuse-sample-java-war-hello/target/hello-1.0.war
         dest: var/lib/tomcat8/webapps
         mode: pull
       delegate_to: tomcat
