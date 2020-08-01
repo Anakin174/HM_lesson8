@@ -25,7 +25,6 @@
 - name: Install tomcat
   hosts: tomcat
   become: yes
-
   tasks:
     - name: Install basic java software
       yum:
@@ -34,19 +33,16 @@
       with_items:
         - java-1.8.0-openjdk
         - tomcat8
-
     - name: Transfer file from maven to tomcat
         synchronize:
-          src: /boxfuse-sample-java-war-hello/target/hello-1.0.war
-          dest: var/lib/tomcat8/webapps
-          mode: pull
+           src: /boxfuse-sample-java-war-hello/target/hello-1.0.war
+           dest: var/lib/tomcat8/webapps
+           mode: pull
         delegate_to: tomcat
-
     - name: Ensure nginx service is started
         service:
           name: tomcat8
           state: started
-
     - name: Open port
        rules:
          proto: tcp
