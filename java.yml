@@ -1,24 +1,14 @@
-#[maven]
-#35.202.159.177
-#[tomcat]
-#34.65.240.26
 ---
 - name: Install build software
   hosts: maven
   become: yes
   tasks:
- #   - name: Ensure git package is present
-  #    apt:
-  #      name: git
-  #      state: present
-   #     update_cache: yes
     - name: Ensure maven package is present
       apt:
         name: maven
         state: present
         update_cache: yes
     - name: Get git repo
-     # shell: git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
       git: repo=https://github.com/boxfuse/boxfuse-sample-java-war-hello.git dest=/work/ accept_hostkey=yes
     - name: Build maven clean package
       command: mvn -f /work/pom.xml clean package
@@ -40,17 +30,9 @@
         state: stopped
     - name: Transfer file from maven to tomcat
       synchronize:
-        src: work/target/hello-1.0.war
-        dest: var/lib/tomcat8/webapps
-        mode: pull
+        src=/work/target/hello-1.0.war dest=/var/lib/tomcat8/hello-1.0.war
       delegate_to: tomcat
     - name: Ensure tomcat8 service is started
       service:
         name: tomcat8
         state: started
-#    - name: Open port
-#      rules:
-#        proto: tcp
-#          from_port: 8080
-#          to_port: 8080
-#          cidr_ip: 0.0.0.0/0
