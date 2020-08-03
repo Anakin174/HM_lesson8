@@ -31,15 +31,11 @@
       with_items:
         - default-jdk
         - tomcat8
-    - name: Ensure tomcat service stop
-      service:
-        name: tomcat8
-        state: stopped
     - name: Push war file
       copy:
         src: /home/hello-1.0.war
         dest: /var/lib/tomcat8/webapps
-    - name: Ensure tomcat8 service is started
+    - name: Ensure tomcat8 service is restarted
       service:
         name: tomcat8
-        state: started
+        state: restart
